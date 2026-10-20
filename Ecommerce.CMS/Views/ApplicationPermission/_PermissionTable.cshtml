@@ -1,0 +1,73 @@
+﻿@using Project.Common.Models.ViewModels.ApplicationPermission;
+@using Project.Common.Models
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Localization
+@model PagedResult<ApplicationPermissionViewModel>
+@inject IStringLocalizer<SharedResource> Localizer
+
+<table id="grid">
+    <thead>
+        <tr>
+            <th style="width:34px; text-align:center"><input class="check" type="checkbox" id="selectAll"></th>
+            <th style="width:42px">@Localizer["Table_Header_No"]</th>
+            <th>@Localizer["Table_Header_Id"]</th>
+            <th>@Localizer["Table_Header_PermissionKey"]</th>
+            <th>@Localizer["Table_Header_Name"]</th>
+            <th>@Localizer["Table_Header_Group"]</th>
+            <th>@Localizer["Table_Header_Description"]</th>
+            <th>@Localizer["Table_Header_CreatedAt"]</th>
+            <th>@Localizer["Table_Header_UpdatedAt"]</th>
+            <th style="text-align:center; width:110px">@Localizer["Table_Header_Actions"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model?.Items != null && Model.Items.Any())
+        {
+            int stt = (Model.PageIndex - 1) * Model.PageSize;
+            foreach (var item in Model.Items)
+            {
+                stt++;
+                <tr>
+                    <td style="text-align:center"><input type="checkbox" class="check rowcheck" value="@item.Id"></td>
+                    <td style="color:#64748b">@stt</td>
+                    <td style="color:#64748b; font-weight:600">@item.Id</td>
+                    <td>
+                        <span class="badge-code">@item.PermissionKey</span>
+                    </td>
+                    <td>
+                        <strong style="color:#0f172a">@item.Name</strong>
+                    </td>
+                    <td>
+                        <span class="badge-group">@item.GroupName</span>
+                    </td>
+                    <td style="color:#64748b; max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" title="@item.Description">
+                        @(string.IsNullOrEmpty(item.Description) ? "—" : item.Description)
+                    </td>
+                    <td style="color:#64748b">@(item.CreatedAt?.ToString("dd/MM/yyyy HH:mm") ?? "—")</td>
+                    <td style="color:#64748b">@(item.UpdatedAt?.ToString("dd/MM/yyyy HH:mm") ?? "—")</td>
+                    <td style="text-align:center">
+                        <button type="button" class="row-btn" onclick="editPermission(@item.Id)">@Localizer["Btn_Edit"]</button>
+                        <button type="button" class="row-btn" style="color:#dc2626; border-color:#fca5a5" onclick="deletePermission(@item.Id)">@Localizer["Btn_Delete"]</button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="10" class="text-center py-5 text-muted">
+                    <div style="font-size: 13px; font-weight:600; color:#475569">@Localizer["Table_Empty_Title"]</div>
+                    <div style="font-size: 10.5px; color:#94a3b8; margin-top:2px">@Localizer["Table_Empty_Subtitle"]</div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    // Cập nhật lại thông tin số lượng bản ghi ở thanh toolbar phía trên và footer bên dưới
+    var countElem = document.getElementById("countText");
+    var showingElem = document.getElementById("showingText");
+    if (countElem) countElem.textContent = "@(Model?.TotalItems ?? 0) @Localizer["Table_Records_Unit"]";
+    if (showingElem) showingElem.textContent = "@Localizer["Table_Showing_Prefix"] @(Model?.Items?.Count ?? 0) / @(Model?.TotalItems ?? 0) @Localizer["Table_Records_Unit"]";
+</script>

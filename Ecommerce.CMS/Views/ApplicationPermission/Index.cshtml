@@ -1,0 +1,184 @@
+﻿@using Project.Common.Models.ViewModels.ApplicationPermission
+@using Project.Common.Models
+@using Project.Common.Enum.Entities 
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Localization
+@using System.ComponentModel.DataAnnotations
+@using System.Reflection
+@model PermissionSearchViewModel
+@inject IStringLocalizer<SharedResource> Localizer
+
+@{
+    ViewData["Title"] = Localizer["Layout_Menu_System_Permission"];
+    var pageSize = Model?.PageSize ?? 20;
+}
+
+<!-- 3. Filter Panel (Form tra cứu gắn với PermissionSearchViewModel) -->
+<section class="filter-panel">
+    @using (Html.BeginForm("Index", "ApplicationPermission", FormMethod.Get, new { id = "searchForm", @class = "filter-row" }))
+    {
+        <!-- Tìm kiếm theo từ khóa (Keywork) -->
+        <div class="field w-search">
+            @Html.LabelFor(m => m.Keywork)
+            @Html.TextBoxFor(m => m.Keywork, new { @class = "ctrl", placeholder = Localizer["Placeholder_Search_Permission"].Value })
+        </div>
+
+        <!-- Sắp xếp theo (SortBy) - Binding trực tiếp với Enum ApplicationPermissionSortField -->
+        <div class="field w-status">
+            @Html.LabelFor(m => m.SortBy)
+            <select name="SortBy" id="SortBy" class="ctrl">
+                @foreach (var field in Enum.GetValues(typeof(ApplicationPermissionSortField)))
+                {
+                    var fieldName = field.ToString();
+                    
+                    var displayAttribute = typeof(ApplicationPermissionSortField)
+                        .GetMember(fieldName)[0]
+                        .GetCustomAttribute<DisplayAttribute>();
+                        
+                    var localizedName = displayAttribute?.Name != null ? Localizer[displayAttribute.Name].Value : fieldName;
+
+                    <option value="@fieldName" selected="@(Model?.SortBy == fieldName)">@localizedName</option>
+                }
+            </select>
+        </div>
+
+        <!-- Chiều sắp xếp (IsDescending) -->
+        <div class="field w-type">
+            @Html.LabelFor(m => m.IsDescending)
+            @Html.DropDownListFor(
+                m => m.IsDescending, 
+                new List<SelectListItem>
+                {
+                    new SelectListItem { Text = Localizer["Sort_Descending"].Value, Value = "true" },
+                    new SelectListItem { Text = Localizer["Sort_Ascending"].Value, Value = "false" }
+                }, 
+                new { @class = "ctrl" }
+            )
+        </div>
+
+        <!-- Hidden giữ trang hiện tại và số dòng khi submit -->
+        @Html.HiddenFor(m => m.PageIndex, new { id = "pageIndexInput" })
+        @Html.HiddenFor(m => m.PageSize, new { id = "pageSizeInput" })
+
+        <!-- Nút hành động tìm kiếm -->
+        <div class="filter-actions" style="align-self: flex-end;">
+            <button type="submit" class="btn primary" id="searchBtn">⌕ @Localizer["Btn_Search"]</button>
+            <button type="button" class="btn" id="resetBtn">@Localizer["Btn_Reset"]</button>
+            <button type="button" class="btn primary" id="openCreateModalBtn">＋ @Localizer["Btn_Add_Permission"]</button>
+        </div>
+    }
+</section>
+
+<!-- 4. Table Panel (Khung chứa lưới dữ liệu bảng bên dưới) -->
+<section class="table-panel">
+    <div class="table-toolbar">
+        <span class="table-title">@Localizer["Table_Title_Permission"]</span>
+        <span class="count" id="countText">0 @Localizer["Table_Count_Records"]</span>
+        <span class="toolbar-spacer"></span>
+        <button class="tool-link" id="columnConfigBtn">☷ @Localizer["Btn_Column_Config"]</button>
+    </div>
+
+    <!-- Vùng chứa dữ liệu bảng (Load Partial View bằng Ajax) -->
+    <div class="table-wrap" id="tableContainer">
+        <div class="p-4 text-center text-muted">@Localizer["Table_Loading"]</div>
+    </div>
+
+    <!-- Chân trang phân trang -->
+    <div class="table-footer">
+        <span id="showingText">@Localizer["Table_Showing"] 0 @Localizer["Table_Count_Records"]</span>
+        <span>@Localizer["Table_Showing"]</span>
+        <select class="page-size" id="pageSizeSelector">
+            <option value="10" selected="@(pageSize == 10)">10</option>
+            <option value="20" selected="@(pageSize == 20)">20</option>
+            <option value="50" selected="@(pageSize == 50)">50</option>
+            <option value="100" selected="@(pageSize == 100)">100</option>
+        </select>
+        <span>@Localizer["Table_Rows_PerPage"]</span>
+        <div class="pages" id="paginationContainer">
+            <!-- Render nút phân trang động bằng JS/Ajax -->
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Đồng bộ giá trị mặc định từ dropdown phân trang vào hidden input ngay khi load trang
+            var initialPageSize = $("#pageSizeSelector").val();
+            $("#pageSizeInput").val(initialPageSize);
+
+            function openPopup(url, title, width = 650, height = 550) {
+                var dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screen.left;
+                var dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screen.top;
+
+                var w = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+                var h = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+                var left = ((w / 2) - (width / 2)) + dualScreenLeft;
+                var top = ((h / 2) - (height / 2)) + dualScreenTop;
+
+                var options = `scrollbars=yes,resizable=yes,width=${width},height=${height},top=${top},left=${left}`;
+            
+                var popupWindow = window.open(url, title, options);
+                if (window.focus && popupWindow) {
+                    popupWindow.focus();
+                }
+                return popupWindow;
+            }
+
+            window.editPermission = function(id) {
+                var updateUrl = '@Url.Action("Upsert", "ApplicationPermission")?id=' + id;
+                openPopup(updateUrl, "CapNhatQuyen", 650, 550);
+            };
+
+            // Hàm gọi Ajax load bảng dữ liệu
+            function loadTableData() {
+                var formData = $("#searchForm").serialize(); 
+
+                $("#tableContainer").html('<div class="p-4 text-center text-muted">@Localizer["Msg_Loading_Ajax"]</div>');
+
+                $.ajax({
+                    url: '@Url.Action("GetTableData", "ApplicationPermission")',
+                    type: 'GET',
+                    data: formData, 
+                    success: function (resultHtml) {
+                        $("#tableContainer").html(resultHtml);
+                    },
+                    error: function () {
+                        $("#tableContainer").html('<div class="p-4 text-center text-danger">@Localizer["Msg_Load_Error"]</div>');
+                    }
+                });
+            }
+
+            // 1. Khi bấm Submit form tìm kiếm
+            $("#searchForm").on("submit", function (e) {
+                e.preventDefault();
+                $("#pageIndexInput").val(1); 
+                loadTableData();
+            });
+
+            // 2. Khi bấm nút Đặt lại (Reset Form)
+            $("#resetBtn").on("click", function () {
+                $("#searchForm")[0].reset();
+                $("#pageIndexInput").val(1);
+                $("#pageSizeInput").val($("#pageSizeSelector").val()); 
+                loadTableData();
+            });
+
+            // 3. Khi thay đổi số dòng trên trang (PageSize)
+            $("#pageSizeSelector").on("change", function () {
+                $("#pageSizeInput").val($(this).val());$("#pageIndexInput").val(1);
+                loadTableData();
+            });
+
+            // Click nút "＋ Thêm quyền" -> Mở WinPopup gọi Action Upsert
+            $("#openCreateModalBtn").on("click", function () {
+                var createUrl = '@Url.Action("Upsert", "ApplicationPermission")';
+                openPopup(createUrl, "ThemMoiQuyen", 650, 550);
+            });
+
+            // Tự động load dữ liệu bảng lần đầu khi mở trang
+            loadTableData();
+        });
+    </script>
+}

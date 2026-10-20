@@ -1,0 +1,99 @@
+﻿@using Project.Common.Models
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Localization
+@using Project.Common.Models.ViewModels.ApplicationPermission
+@model ApplicationPermissionUpsertViewModel
+@inject IStringLocalizer<SharedResource> Localizer
+
+@{
+    Layout = "_LayoutPopup";
+    var isCreate = Model.IsNew;
+    var actionName = "CreateOrUpdate";
+    ViewData["Title"] = isCreate ? Localizer["Title_Permission_Create"].Value : Localizer["Title_Permission_Update"].Value;
+}
+
+<!-- Submit trực tiếp lên Controller theo đúng Action được phân luồng tại Server -->
+@using (Html.BeginForm(actionName, "ApplicationPermission", FormMethod.Post, new { id = "popupForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="popup-body">
+        <!-- Chỉ hiển thị thông báo kết quả khi IsAction == true -->
+        @if (Model != null && Model.IsAction)
+        {
+            var isSuccess = Model.IsSuccess;
+            var alertClass = isSuccess ? "alert-success" : "alert-danger";
+            var alertIcon = isSuccess ? "✓" : "⚠";
+
+            <div class="alert @alertClass mb-3" style="padding: 12px 16px; border-radius: 6px; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; background-color: @(isSuccess ? "#f0fdf4" : "#fef2f2"); color: @(isSuccess ? "#166534" : "#991b1b"); border: 1px solid @(isSuccess ? "#bbf7d0" : "#fecaca");">
+                <span style="font-size: 16px; font-weight: bold;">@alertIcon</span>
+                <div style="flex: 1;">@Model.Message</div>
+            </div>
+
+            <!-- Nếu thực hiện thành công: Tải lại trang cha & tự động đóng Popup -->
+            if (isSuccess)
+            {
+                <script>
+                    setTimeout(function () {
+                        if (window.opener && typeof window.opener.loadTableData === "function") {
+                            window.opener.loadTableData();
+                        }
+                        window.close();
+                    }, 1000);
+                </script>
+            }
+        }
+
+        <!-- Hiển thị tổng hợp lỗi từ Server nếu ModelState thất bại -->
+        @Html.ValidationSummary(true, "", new { @class = "text-danger validation-error mb-3" })
+
+        <div class="form-grid">
+            <!-- PermissionKey -->
+            <div class="field">
+                <label>
+                    @Html.DisplayNameFor(m => m.PermissionKey)
+                    <span class="required-star">*</span>
+                </label>
+                @Html.TextBoxFor(m => m.PermissionKey, new { @class = "ctrl", placeholder = Localizer["Placeholder_PermissionKey"].Value, autocomplete = "off" })
+                <span class="field-hint">@Localizer["Hint_PermissionKey"]</span>
+                @Html.ValidationMessageFor(m => m.PermissionKey, "", new { @class = "validation-error" })
+            </div>
+
+            <!-- GroupName -->
+            <div class="field">
+                <label>
+                    @Html.DisplayNameFor(m => m.GroupName)
+                    <span class="required-star">*</span>
+                </label>
+                @Html.TextBoxFor(m => m.GroupName, new { @class = "ctrl", placeholder = Localizer["Placeholder_GroupName"].Value, autocomplete = "off" })
+                <span class="field-hint">@Localizer["Hint_GroupName"]</span>
+                @Html.ValidationMessageFor(m => m.GroupName, "", new { @class = "validation-error" })
+            </div>
+
+            <!-- Name (Full Width) -->
+            <div class="field full-width">
+                <label>
+                    @Html.DisplayNameFor(m => m.Name)
+                    <span class="required-star">*</span>
+                </label>
+                @Html.TextBoxFor(m => m.Name, new { @class = "ctrl", placeholder = Localizer["Placeholder_Name"].Value, autocomplete = "off" })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "validation-error" })
+            </div>
+
+            <!-- Description (Full Width) -->
+            <div class="field full-width">
+                @Html.LabelFor(m => m.Description)
+                @Html.TextAreaFor(m => m.Description, new { @class = "ctrl", placeholder = Localizer["Placeholder_Description"].Value })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "validation-error" })
+            </div>
+        </div>
+    </div>
+
+    <div class="popup-footer">
+        <button type="button" class="btn secondary" onclick="window.close()">@Localizer["Btn_Close_Window"]</button>
+        <button type="submit" class="btn primary" id="saveBtn">
+            <span>✓ @Localizer["Btn_Save_Info"]</span>
+        </button>
+    </div>
+}

@@ -1,0 +1,384 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Btn_Add_Permission" xml:space="preserve">
+    <value>Thêm quyền</value>
+  </data>
+  <data name="Btn_Close_Window" xml:space="preserve">
+    <value>Đóng cửa sổ</value>
+  </data>
+  <data name="Btn_Column_Config" xml:space="preserve">
+    <value>Cấu hình cột</value>
+  </data>
+  <data name="Btn_Delete" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="Btn_Edit" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="Btn_Reset" xml:space="preserve">
+    <value>Đặt lại</value>
+  </data>
+  <data name="Btn_Save_Info" xml:space="preserve">
+    <value>Lưu thông tin</value>
+  </data>
+  <data name="Btn_Search" xml:space="preserve">
+    <value>Tra cứu</value>
+  </data>
+  <data name="Button_SignIn_Now" xml:space="preserve">
+    <value>Đăng nhập ngay</value>
+  </data>
+  <data name="Hint_GroupName" xml:space="preserve">
+    <value>Phân nhóm chức năng</value>
+  </data>
+  <data name="Hint_PermissionKey" xml:space="preserve">
+    <value>Mã định danh duy nhất trong hệ thống</value>
+  </data>
+  <data name="Id_DisplayName" xml:space="preserve">
+    <value>Mã ID</value>
+  </data>
+  <data name="Layout_Brand_Subtitle" xml:space="preserve">
+    <value>Quản trị hệ thống</value>
+  </data>
+  <data name="Layout_Footer_Copyright" xml:space="preserve">
+    <value>© 2026 - Hệ thống quản trị nội bộ</value>
+  </data>
+  <data name="Layout_Footer_Help" xml:space="preserve">
+    <value>Trợ giúp</value>
+  </data>
+  <data name="Layout_GlobalSearch_Placeholder" xml:space="preserve">
+    <value>⌕ Tìm kiếm nhanh trong hệ thống...</value>
+  </data>
+  <data name="Layout_Menu_HR" xml:space="preserve">
+    <value>Nhân sự</value>
+  </data>
+  <data name="Layout_Menu_HR_Permission" xml:space="preserve">
+    <value>Phân quyền nhân sự</value>
+  </data>
+  <data name="Layout_Menu_HR_Staff" xml:space="preserve">
+    <value>Quản lý nhân sự hệ thống</value>
+  </data>
+  <data name="Layout_Menu_Overview" xml:space="preserve">
+    <value>Tổng quan</value>
+  </data>
+  <data name="Layout_Menu_System" xml:space="preserve">
+    <value>Hệ thống</value>
+  </data>
+  <data name="Layout_Menu_System_Permission" xml:space="preserve">
+    <value>Phân quyền hệ thống</value>
+  </data>
+  <data name="Message_Forbidden_CreateOrUpdateData" xml:space="preserve">
+    <value>Bạn không có quyền thực hiện thao tác thêm mới hoặc cập nhật dữ liệu này.</value>
+  </data>
+  <data name="Message_Forbidden_ReadData" xml:space="preserve">
+    <value>Bạn không có quyền truy cập hoặc đọc dữ liệu này.</value>
+  </data>
+  <data name="Message_Success" xml:space="preserve">
+    <value>Thao tác thành công.</value>
+  </data>
+  <data name="Message_System_Error" xml:space="preserve">
+    <value>Đã có lỗi hệ thống xảy ra. Vui lòng thử lại sau.</value>
+  </data>
+  <data name="Message_UserInfo_NotFound" xml:space="preserve">
+    <value>Không tìm thấy hồ sơ nhân sự, vui lòng liên hệ bộ phận nhân sự.</value>
+  </data>
+  <data name="Message_Validation_Failure_AccountLocked" xml:space="preserve">
+    <value>Tài khoản của bạn đã bị khóa và không thể đăng nhập.</value>
+  </data>
+  <data name="Message_Validation_Failure_Password" xml:space="preserve">
+    <value>Mật khẩu không hợp lệ.</value>
+  </data>
+  <data name="Message_Validation_Failure_UserId" xml:space="preserve">
+    <value>ID người dùng không hợp lệ.</value>
+  </data>
+  <data name="Message_Validation_Failure_UserIdAndPasswordRequired" xml:space="preserve">
+    <value>Vui lòng nhập đầy đủ ID người dùng và mật khẩu.</value>
+  </data>
+  <data name="Msg_Loading_Ajax" xml:space="preserve">
+    <value>Đang tải dữ liệu...</value>
+  </data>
+  <data name="Msg_Load_Error" xml:space="preserve">
+    <value>Lỗi khi tải dữ liệu hệ thống.</value>
+  </data>
+  <data name="Msg_Notification" xml:space="preserve">
+    <value>Thông báo hệ thống</value>
+  </data>
+  <data name="Msg_Permission_Save_Error" xml:space="preserve">
+    <value>Cập nhật key quyền thất bại, vui lòng liên hệ IT.</value>
+  </data>
+  <data name="Msg_Permission_Save_Success" xml:space="preserve">
+    <value>Cập nhật key quyền thành công.</value>
+  </data>
+  <data name="Page_AccessDenied_Description" xml:space="preserve">
+    <value>Rất tiếc, tài khoản của bạn không có quyền để truy cập vào màn hình hoặc chức năng này. Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là sự nhầm lẫn.</value>
+  </data>
+  <data name="Page_AccessDenied_Title" xml:space="preserve">
+    <value>Truy cập bị từ chối</value>
+  </data>
+  <data name="Page_SystemAdmin_Description" xml:space="preserve">
+    <value>Vui lòng đăng nhập để truy cập vào bảng điều khiển quản trị.</value>
+  </data>
+  <data name="Page_SystemAdmin_Title" xml:space="preserve">
+    <value>Quản trị Hệ thống</value>
+  </data>
+  <data name="Password_DisplayName" xml:space="preserve">
+    <value>Mật khẩu</value>
+  </data>
+  <data name="Permission_Field_CreatedAt" xml:space="preserve">
+    <value>Ngày tạo</value>
+  </data>
+  <data name="Permission_Field_Description" xml:space="preserve">
+    <value>Mô tả quyền</value>
+  </data>
+  <data name="Permission_Field_GroupName" xml:space="preserve">
+    <value>Nhóm quyền</value>
+  </data>
+  <data name="Permission_Field_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Permission_Field_IsDelete" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="Permission_Field_Name" xml:space="preserve">
+    <value>Tên quyền</value>
+  </data>
+  <data name="Permission_Field_PermissionKey" xml:space="preserve">
+    <value>Key quyền</value>
+  </data>
+  <data name="Permission_Field_UpdatedAt" xml:space="preserve">
+    <value>Ngày cập nhật</value>
+  </data>
+  <data name="Permission_Sort_CreatedAt" xml:space="preserve">
+    <value>Ngày tạo</value>
+  </data>
+  <data name="Permission_Sort_GroupName" xml:space="preserve">
+    <value>Nhóm quyền</value>
+  </data>
+  <data name="Permission_Sort_Id" xml:space="preserve">
+    <value>Mã ID</value>
+  </data>
+  <data name="Permission_Sort_Name" xml:space="preserve">
+    <value>Tên quyền</value>
+  </data>
+  <data name="Permission_Sort_PermissionKey" xml:space="preserve">
+    <value>Key quyền</value>
+  </data>
+  <data name="Permission_Sort_UpdatedAt" xml:space="preserve">
+    <value>Ngày cập nhật</value>
+  </data>
+  <data name="Placeholder_Description" xml:space="preserve">
+    <value>Mô tả chi tiết...</value>
+  </data>
+  <data name="Placeholder_GroupName" xml:space="preserve">
+    <value>VD: System, User, Order...</value>
+  </data>
+  <data name="Placeholder_Name" xml:space="preserve">
+    <value>VD: Xem danh sách người dùng</value>
+  </data>
+  <data name="Placeholder_PermissionKey" xml:space="preserve">
+    <value>VD: system_user_view</value>
+  </data>
+  <data name="Placeholder_Search_Permission" xml:space="preserve">
+    <value>Nhập tên quyền hoặc mã key...</value>
+  </data>
+  <data name="Sort_Descending" xml:space="preserve">
+    <value>Giảm dần (DESC)</value>
+  </data>
+  <data name="Table_Count_Records" xml:space="preserve">
+    <value>bản ghi</value>
+  </data>
+  <data name="Table_Empty_Subtitle" xml:space="preserve">
+    <value>Vui lòng thử lại với từ khóa hoặc bộ lọc khác</value>
+  </data>
+  <data name="Table_Empty_Title" xml:space="preserve">
+    <value>Không tìm thấy dữ liệu phân quyền</value>
+  </data>
+  <data name="Table_Header_Actions" xml:space="preserve">
+    <value>Thao tác</value>
+  </data>
+  <data name="Table_Header_CreatedAt" xml:space="preserve">
+    <value>Ngày tạo</value>
+  </data>
+  <data name="Table_Header_Description" xml:space="preserve">
+    <value>Mô tả</value>
+  </data>
+  <data name="Table_Header_Group" xml:space="preserve">
+    <value>Nhóm quyền</value>
+  </data>
+  <data name="Table_Header_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Table_Header_Name" xml:space="preserve">
+    <value>Tên quyền</value>
+  </data>
+  <data name="Table_Header_No" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="Table_Header_PermissionKey" xml:space="preserve">
+    <value>Key quyền</value>
+  </data>
+  <data name="Table_Header_UpdatedAt" xml:space="preserve">
+    <value>Ngày cập nhật</value>
+  </data>
+  <data name="Table_Loading" xml:space="preserve">
+    <value>Đang tải dữ liệu hệ thống...</value>
+  </data>
+  <data name="Table_Records_Unit" xml:space="preserve">
+    <value>bản ghi</value>
+  </data>
+  <data name="Table_Rows_PerPage" xml:space="preserve">
+    <value>dòng/trang</value>
+  </data>
+  <data name="Table_Showing" xml:space="preserve">
+    <value>Hiển thị</value>
+  </data>
+  <data name="Table_Showing_Prefix" xml:space="preserve">
+    <value>Hiển thị</value>
+  </data>
+  <data name="Table_Title_Permission" xml:space="preserve">
+    <value>Danh sách key quyền hệ thống</value>
+  </data>
+  <data name="Title_Permission_Create" xml:space="preserve">
+    <value>Thêm mới quyền hệ thống</value>
+  </data>
+  <data name="Title_Permission_Update" xml:space="preserve">
+    <value>Cập nhật quyền hệ thống</value>
+  </data>
+  <data name="Validation_Id_Required" xml:space="preserve">
+    <value>Vui lòng nhập ID định danh.</value>
+  </data>
+  <data name="Validation_Password_Required" xml:space="preserve">
+    <value>Vui lòng nhập mật khẩu.</value>
+  </data>
+  <data name="Validation_Required" xml:space="preserve">
+    <value>Trường {0} không được để trống.</value>
+  </data>
+  <data name="Validation_StringLength_Max" xml:space="preserve">
+    <value>Trường {0} không được vượt quá {1} ký tự.</value>
+  </data>
+  <data name="View_IsDescending" xml:space="preserve">
+    <value>Giảm dần</value>
+  </data>
+  <data name="View_Search" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="View_SortBy" xml:space="preserve">
+    <value>Sắp xếp theo</value>
+  </data>
+</root>

@@ -1,0 +1,339 @@
+﻿@using Project.Common.Models
+@model List<MenuItemModel>
+
+<style>
+/* Style riêng cho Top Navbar & Dropdown Menu với thiết kế bo tròn tinh tế */
+.top-nav-bar {
+  background: #172b4d;
+  color: #d6e0ef;
+  height: 38px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 12px;
+}
+
+.top-nav-bar .main-menu {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100%;
+}
+
+.top-nav-bar .menu-item {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Bo tròn item menu chính trên thanh ngang */
+.top-nav-bar .menu-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  height: 28px;
+  border-radius: 6px;
+  color: #d1dced;
+  text-decoration: none !important;
+  font-weight: 500;
+  transition: all .15s ease;
+  background: transparent !important;
+  border-bottom: none !important;
+  cursor: pointer;
+}
+
+.top-nav-bar .menu-link .ico {
+  font-size: 12px;
+}
+
+.top-nav-bar .menu-link .arrow {
+  font-size: 9px;
+  color: #91a4bf;
+  transition: transform .2s;
+  margin-left: auto;
+}
+
+/* Kích hoạt trạng thái active/hover/show */
+.top-nav-bar .menu-item:hover > .menu-link, 
+.top-nav-bar .menu-item.active > .menu-link,
+.top-nav-bar .menu-item.show > .menu-link {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+}
+
+.top-nav-bar .menu-item:hover > .menu-link .arrow,
+.top-nav-bar .menu-item.show > .menu-link .arrow {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu gốc và Sub-menu đa cấp */
+.top-nav-bar .dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 210px;
+  background: #fff !important;
+  border: 1px solid #d9e0e8 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
+  list-style: none !important;
+  padding: 6px !important;
+  margin: 0 !important;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* Hỗ trợ sub-menu lồng nhau từ cấp 3 trở đi (nằm bên phải) */
+.top-nav-bar .dropdown .dropdown {
+  top: -6px;
+  left: calc(100% + 4px);
+}
+
+/* CHỈ cho phép hover dropdown trên Desktop */
+body:not(.touch-device) .top-nav-bar .menu-item.has-dropdown:hover > .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Khi bấm/click hoặc kích hoạt bằng JS */
+.top-nav-bar .menu-item.show > .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.top-nav-bar .dropdown-item {
+  position: relative;
+  padding: 0 !important;
+  margin: 2px 0 !important;
+  background: transparent !important;
+}
+
+/* Bo tròn từng dòng item màn hình con bên trong */
+.top-nav-bar .dropdown-item > a,
+.top-nav-bar .dropdown-item > .menu-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  color: #34445c !important;
+  text-decoration: none !important;
+  font-size: 11.5px !important;
+  background: transparent !important;
+  transition: background .12s, color .12s;
+  white-space: nowrap;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.top-nav-bar .dropdown-item > a:hover,
+.top-nav-bar .dropdown-item > .menu-link:hover {
+  background: #edf5ff !important;
+  color: #1769d2 !important;
+}
+
+.top-nav-bar .dropdown-item.active > a {
+  background: #e2eeff !important;
+  color: #1769d2 !important;
+  font-weight: 600;
+}
+
+.top-nav-bar .sys-badge {
+  margin-left: auto;
+  font-size: 10px;
+  color: #8fa3bf;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+</style>
+
+<!-- Khai báo hàm Razor đệ quy để render menu nhiều cấp không giới hạn -->
+@{
+    // Helper render một item đơn hoặc item nhóm đa cấp
+    void RenderMenuItems(List<MenuItemModel> items)
+    {
+        if (items == null || items.Count == 0) return;
+
+        foreach (var item in items)
+        {
+            bool hasChildren = item.Children != null && item.Children.Count > 0;
+            string itemClass = hasChildren ? "menu-item has-dropdown" : "menu-item";
+            
+            <li class="@itemClass" id="menu-@item.Id">
+                @if (hasChildren)
+                {
+                    @* Nhóm menu có cấp con (dùng thẻ a điều hướng mở dropdown qua click/touch) *@
+                    <a class="menu-link dropdown-toggle-btn" href="javascript:void(0);">
+                        @if (!string.IsNullOrEmpty(item.Icon))
+                        {
+                            <span class="ico">@item.Icon</span>
+                        }
+                        <span>@item.Title</span>
+                        <span class="arrow">▾</span>
+                    </a>
+                    
+                    @* Gọi đệ quy để render các cấp tiếp theo *@
+                    <ul class="dropdown">
+                        @foreach (var child in item.Children)
+                        {
+                            bool childHasChildren = child.Children != null && child.Children.Count > 0;
+                            string childItemClass = childHasChildren ? "dropdown-item has-dropdown" : "dropdown-item";
+
+                            <li class="@childItemClass" id="menu-@child.Id">
+                                @if (childHasChildren)
+                                {
+                                    <a class="menu-link dropdown-toggle-btn" href="javascript:void(0);">
+                                        @if (!string.IsNullOrEmpty(child.Icon))
+                                        {
+                                            <span class="ico">@child.Icon</span>
+                                        }
+                                        <span>@child.Title ( @child.Id )</span>
+                                        <span class="arrow">▸</span>
+                                    </a>
+                                    <ul class="dropdown">
+                                        @{
+                                            // Tiếp tục đệ quy sâu hơn nếu có cấp 3, cấp 4...
+                                            RenderMenuItems(child.Children);
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    @if (!string.IsNullOrEmpty(child.Controller) && !string.IsNullOrEmpty(child.Action))
+                                    {
+                                        @Html.ActionLink(child.Title+" ( "+child.Id+" )", child.Action, child.Controller, null, new { @class = "" })
+                                    }
+                                    else
+                                    {
+                                        <a href="@(string.IsNullOrEmpty(child.Path) ? "javascript:void(0);" : child.Path)">
+                                            @if (!string.IsNullOrEmpty(child.Icon))
+                                            {
+                                                <span class="ico">@child.Icon</span>
+                                            }
+                                            <span>@child.Title ( @child.Id )</span>
+                                        </a>
+                                    }
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    @* Item lá cuối cùng không có cấp con *@
+                    @if (!string.IsNullOrEmpty(item.Controller) && !string.IsNullOrEmpty(item.Action))
+                    {
+                        @Html.ActionLink(item.Title+" ( "+item.Id+" )", item.Action, item.Controller, null, new { @class = "menu-link" })
+                    }
+                    else
+                    {
+                        <a class="menu-link" href="@(string.IsNullOrEmpty(item.Path) ? "javascript:void(0);" : item.Path)">
+                            @if (!string.IsNullOrEmpty(item.Icon))
+                            {
+                                <span class="ico">@item.Icon</span>
+                            }
+                            <span>@item.Title ( @item.Id )</span>
+                        </a>
+                    }
+                }
+            </li>
+        }
+    }
+}
+
+<!-- Navbar Menu Ngang Render Tự Động Đa Cấp Từ Model -->
+<nav class="top-nav-bar">
+  <ul class="main-menu">
+    @{
+        RenderMenuItems(Model);
+    }
+  </ul>
+
+  <div class="sys-badge">v1.0.0 ● System Active</div>
+</nav>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Phát hiện thiết bị có hỗ trợ cảm ứng
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      document.body.classList.add('touch-device');
+    }
+
+    const menuItems = document.querySelectorAll(".top-nav-bar .menu-item.has-dropdown");
+
+    menuItems.forEach(menuItem => {
+      const toggleBtn = menuItem.querySelector(":scope > .dropdown-toggle-btn");
+      if (!toggleBtn) return;
+
+      // Xử lý khi click vào nút menu nhóm đa cấp
+      toggleBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const isOpen = menuItem.classList.contains("show");
+
+        // Nếu là cấp 1 (menu gốc), đóng tất cả các menu gốc khác đang mở
+        if (menuItem.parentElement.classList.contains("main-menu")) {
+          document.querySelectorAll(".top-nav-bar > .main-menu > .menu-item.show").forEach(item => {
+            if (item !== menuItem) {
+              item.classList.remove("show");
+            }
+          });
+        } else {
+          // Nếu là cấp con bên trong, chỉ đóng các anh em cùng cấp của nó
+          const parentDropdown = menuItem.closest(".dropdown");
+          if (parentDropdown) {
+            parentDropdown.querySelectorAll(":scope > .menu-item.show, :scope > .dropdown-item.show").forEach(item => {
+              if (item !== menuItem) {
+                item.classList.remove("show");
+              }
+            });
+          }
+        }
+
+        // Toggle trạng thái mở/đóng hiện tại
+        menuItem.classList.toggle("show");
+      });
+
+      // Xử lý hover sang item khác trên Desktop để tránh chồng chéo
+      menuItem.addEventListener("mouseenter", function () {
+        if (!document.body.classList.contains('touch-device')) {
+          if (menuItem.parentElement.classList.contains("main-menu")) {
+            document.querySelectorAll(".top-nav-bar > .main-menu > .menu-item.show").forEach(item => {
+              if (item !== menuItem) {
+                item.classList.remove("show");
+              }
+            });
+          }
+        }
+      });
+    });
+
+    // Click ra ngoài thanh navbar thì ẩn tất cả dropdown đang mở
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest('.top-nav-bar')) {
+        document.querySelectorAll(".top-nav-bar .menu-item.show, .top-nav-bar .dropdown-item.show").forEach(item => {
+          item.classList.remove("show");
+        });
+      }
+    });
+  });
+</script>

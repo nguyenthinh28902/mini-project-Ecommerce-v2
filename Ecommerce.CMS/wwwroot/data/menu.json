@@ -1,0 +1,45 @@
+[
+  {
+    "id": "0201",
+    "title": "Layout_Menu_Overview",
+    "icon": "⌂",
+    "type": "item",
+    "controller": "Home",
+    "action": "Index"
+  },
+  {
+    "id": "00",
+    "title": "Layout_Menu_HR",
+    "icon": "♧",
+    "type": "group",
+    "children": [
+      {
+        "id": "0301",
+        "title": "Layout_Menu_HR_Staff",
+        "type": "item",
+        "controller": "",
+        "action": ""
+      },
+      {
+        "id": "0302",
+        "title": "Layout_Menu_HR_Permission",
+        "type": "item"
+      }
+    ]
+  },
+  {
+    "id": "00",
+    "title": "Layout_Menu_System",
+    "icon": "⚙",
+    "type": "group",
+    "children": [
+      {
+        "id": "0101",
+        "title": "Layout_Menu_System_Permission",
+        "type": "item",
+        "controller": "ApplicationPermission",
+        "action": "Index"
+      }
+    ]
+  }
+]

@@ -1,0 +1,110 @@
+﻿@using Project.Common.Models
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Localization
+@using Project.Common.Models.ViewModels.ApplicationPermission
+@model ApplicationPermissionUpsertViewModel
+@inject IStringLocalizer<SharedResource> Localizer
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "permissionForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="modal-body">
+        <div class="form-grid">
+            <!-- PermissionKey -->
+            <div class="field">
+                <label>
+                    @Html.DisplayNameFor(m => m.PermissionKey)
+                    <span class="required-star">*</span>
+                </label>
+                @Html.TextBoxFor(m => m.PermissionKey, new { @class = "ctrl", placeholder = "VD: system_user_view", autocomplete = "off" })
+                <span class="field-hint">Mã định danh quyền duy nhất trong hệ thống</span>
+                @Html.ValidationMessageFor(m => m.PermissionKey, "", new { @class = "validation-error" })
+            </div>
+
+            <!-- GroupName -->
+            <div class="field">
+                <label>
+                    @Html.DisplayNameFor(m => m.GroupName)
+                    <span class="required-star">*</span>
+                </label>
+                @Html.TextBoxFor(m => m.GroupName, new { @class = "ctrl", placeholder = "VD: System, User, Order...", autocomplete = "off" })
+                <span class="field-hint">Phân nhóm chức năng</span>
+                @Html.ValidationMessageFor(m => m.GroupName, "", new { @class = "validation-error" })
+            </div>
+
+            <!-- Name (Hàng riêng - Full Width) -->
+            <div class="field full-width">
+                <label>
+                    @Html.DisplayNameFor(m => m.Name)
+                    <span class="required-star">*</span>
+                </label>
+                @Html.TextBoxFor(m => m.Name, new { @class = "ctrl", placeholder = "VD: Xem danh sách người dùng", autocomplete = "off" })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "validation-error" })
+            </div>
+
+            <!-- Description (Hàng riêng - Full Width) -->
+            <div class="field full-width">
+                @Html.LabelFor(m => m.Description)
+                @Html.TextAreaFor(m => m.Description, new { @class = "ctrl", placeholder = "Mô tả chi tiết mục đích hoặc phạm vi của quyền này..." })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "validation-error" })
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn secondary" data-bs-dismiss="modal">Hủy bỏ</button>
+        <button type="submit" class="btn primary" id="savePermissionBtn">
+            <span>✓ Lưu thông tin</span>
+        </button>
+    </div>
+}
+
+<script>
+    $(document).off("submit", "#permissionForm").on("submit", "#permissionForm", function (e) {
+        e.preventDefault();
+
+        var $form = $(this);
+
+        // Kiểm tra client-side validation của jQuery Unobtrusive
+        if (typeof $.validator !== 'undefined' && !$form.valid()) {
+            return false;
+        }
+
+        var idVal = parseInt($("#Id").val()) || 0;
+        var isCreate = idVal === 0;
+
+        // Phân nhánh URL và Method chuẩn RESTful
+        var targetUrl = isCreate 
+            ? '@Url.Action("Create", "ApplicationPermission")' 
+            : '@Url.Action("Update", "ApplicationPermission")';
+            
+        var httpMethod = isCreate ? 'POST' : 'PUT';
+
+        $.ajax({
+            url: targetUrl,
+            type: httpMethod,
+            data: $form.serialize(),
+            success: function (response) {
+                if (response.success) {
+                    // Đóng modal và tải lại bảng dữ liệu Ajax
+                    var modalEl = document.getElementById('permissionModal');
+                    if (modalEl) {
+                        var modalObj = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+                        modalObj.hide();
+                    }
+                    if (typeof loadTableData === "function") {
+                        loadTableData();
+                    }
+                } else {
+                    // Hiển thị thông báo lỗi từ Server trả về
+                    alert(response.message || "Có lỗi xảy ra khi lưu dữ liệu.");
+                }
+            },
+            error: function (xhr) {
+                alert("Lỗi kết nối máy chủ (" + xhr.status + ")");
+            }
+        });
+    });
+</script>

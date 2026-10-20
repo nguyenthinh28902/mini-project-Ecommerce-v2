@@ -1,0 +1,26 @@
+﻿@using Microsoft.Extensions.Localization
+@using Project.Common.Models
+@inject IStringLocalizer<SharedResource> Localizer
+
+<div class="container-fluid py-5">
+    <div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+        <div class="col-md-6 col-lg-5">
+            <div class="card border-0 shadow-sm rounded-4 text-center p-4 p-sm-5 bg-white">
+                <div class="card-body">
+
+                    <!-- Biểu tượng cảnh báo khóa quyền -->
+                    <div class="mx-auto mb-4 d-flex align-items-center justify-content-center rounded-4 shadow-sm" 
+                         style="width: 72px; height: 72px; background-color: #fff5f5; color: #dc3545; font-size: 32px;">
+                        <i class="bi bi-shield-lock-fill"></i>
+                    </div>
+
+                    <!-- Tiêu đề và mô tả dịch đa ngôn ngữ -->
+                    <h2 class="h4 fw-bold text-dark mb-3">@Localizer["Page_AccessDenied_Title"]</h2>
+                    <p class="text-muted small mb-4 line-height-base">
+                        @Localizer["Page_AccessDenied_Description"]
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
