@@ -1,0 +1,88 @@
+## ==========================================
+## 1. Build & Output Directories
+## ==========================================
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Tt]emp/
+[Tt]mp/
+out/
+publish/
+[RRelease]/
+[DDebug]/
+
+## ==========================================
+## 2. Visual Studio & IDE Files
+## ==========================================
+.vs/
+.idea/
+.vscode/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.userprefs
+*.launch
+*.cache
+*.dbmdl
+
+## ==========================================
+## 3. ASP.NET Core & Web MVC Specifics
+## ==========================================
+# Local environment configuration overrides
+appsettings.Development.json
+appsettings.Local.json
+appsettings.Personal.json
+secrets.json
+
+# Web uploads & static cache (Bỏ qua tệp upload động của CMS nhưng giữ lại folder)
+**/wwwroot/uploads/*
+!**/wwwroot/uploads/.gitkeep
+**/wwwroot/user_data/*
+!**/wwwroot/user_data/.gitkeep
+**/wwwroot/lib/
+**/wwwroot/dist/
+
+## ==========================================
+## 4. Frontend & Asset Tools (Node/NPM/Bower)
+## ==========================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+bower_components/
+
+## ==========================================
+## 5. NuGet Packages & Restore
+## ==========================================
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## ==========================================
+## 6. Database & Local Storage Files
+## ==========================================
+*.mdf
+*.ldf
+*.db
+*.sqlite
+*.sqlite3
+*.localdb
+
+## ==========================================
+## 7. OS Generated Files
+## ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
