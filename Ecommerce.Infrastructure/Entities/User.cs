@@ -31,6 +31,8 @@ public partial class User
 
     public DateTime? UpdatedAt { get; set; }
 
+    public string? SecurityStamp { get; set; }
+
     public virtual ICollection<InventoryTransaction> InventoryTransactions { get; set; } = new List<InventoryTransaction>();
 
     public virtual ICollection<UserClaim> UserClaims { get; set; } = new List<UserClaim>();

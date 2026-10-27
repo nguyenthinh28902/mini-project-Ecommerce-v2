@@ -219,11 +219,35 @@
   <data name="Msg_Notification" xml:space="preserve">
     <value>System Notification</value>
   </data>
+  <data name="Msg_Permission_Key_Already_Exists" xml:space="preserve">
+    <value>The permission key already exists in the system.</value>
+  </data>
+  <data name="Msg_Permission_NotFound" xml:space="preserve">
+    <value>Permission not found.</value>
+  </data>
   <data name="Msg_Permission_Save_Error" xml:space="preserve">
     <value>Failed to save permission key, please contact IT.</value>
   </data>
   <data name="Msg_Permission_Save_Success" xml:space="preserve">
     <value>Permission key saved successfully.</value>
+  </data>
+  <data name="Msg_RoleCreateManagement_BadRequest" xml:space="preserve">
+    <value>Please enter role information.</value>
+  </data>
+  <data name="Msg_RoleCreateManagement_Conflict" xml:space="preserve">
+    <value>The role already exists or a conflict occurred during creation.</value>
+  </data>
+  <data name="Msg_RoleCreateManagement_Forbidden" xml:space="preserve">
+    <value>You do not have permission to add a new system role.</value>
+  </data>
+  <data name="Msg_RoleManagement_Forbidden" xml:space="preserve">
+    <value>You do not have permission to manage roles.</value>
+  </data>
+  <data name="Msg_RoleNotFound" xml:space="preserve">
+    <value>The requested role was not found.</value>
+  </data>
+  <data name="Msg_success" xml:space="preserve">
+    <value>Operation successful.</value>
   </data>
   <data name="Page_AccessDenied_Description" xml:space="preserve">
     <value>Sorry, your account does not have permission to access this screen or function. Please contact the administrator if you believe this is a mistake.</value>
@@ -297,8 +321,11 @@
   <data name="Placeholder_Search_Permission" xml:space="preserve">
     <value>Enter permission name or key...</value>
   </data>
+  <data name="Sort_Ascending" xml:space="preserve">
+    <value>Ascending</value>
+  </data>
   <data name="Sort_Descending" xml:space="preserve">
-    <value>Descending (DESC)</value>
+    <value>Descending </value>
   </data>
   <data name="Table_Count_Records" xml:space="preserve">
     <value>records</value>

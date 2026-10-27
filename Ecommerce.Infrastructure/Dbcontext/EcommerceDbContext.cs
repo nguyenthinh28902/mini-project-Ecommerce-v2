@@ -1039,6 +1039,7 @@ public partial class EcommerceDbContext : DbContext
             entity.Property(e => e.NormalizedUserName)
                 .HasMaxLength(256)
                 .IsUnicode(false);
+            entity.Property(e => e.SecurityStamp).HasMaxLength(100);
             entity.Property(e => e.Status)
                 .HasMaxLength(100)
                 .IsUnicode(false);

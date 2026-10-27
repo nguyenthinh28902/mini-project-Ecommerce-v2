@@ -37,6 +37,7 @@
         "id": "0101",
         "title": "Layout_Menu_System_Permission",
         "type": "item",
+        "permissionKey": "system_permission_key_view",
         "controller": "ApplicationPermission",
         "action": "Index"
       }

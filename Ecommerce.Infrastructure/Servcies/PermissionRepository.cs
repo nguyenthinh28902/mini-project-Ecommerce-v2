@@ -2,6 +2,7 @@
 using Ecommerce.Infrastructure.Entities;
 using Ecommerce.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Project.Common.Models.Dtos.ApplicationPermission;
 using System.Linq.Dynamic.Core;
 
@@ -25,11 +26,11 @@ namespace Ecommerce.Infrastructure.Servcies
         }
         public async Task<ApplicationPermission?> GetPermissionByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.ApplicationPermissions.FindAsync(new object[] { id }, cancellationToken);
+            return await _dbContext.ApplicationPermissions.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
         }
         public async Task<ApplicationPermission?> GetPermissionByKeyAsync(string key, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.ApplicationPermissions.FirstOrDefaultAsync(p => p.PermissionKey == key, cancellationToken);
+            return await _dbContext.ApplicationPermissions.AsNoTracking().FirstOrDefaultAsync(p => p.PermissionKey == key, cancellationToken);
         }
         public async Task<IEnumerable<ApplicationPermission>> GetAllPermissionsAsync(CancellationToken cancellationToken = default)
         {
@@ -37,13 +38,14 @@ namespace Ecommerce.Infrastructure.Servcies
         }
         public void UpdatePermission(ApplicationPermission permission)
         {
+            permission.UpdatedAt = DateTime.UtcNow;
             _dbContext.ApplicationPermissions.Update(permission);
         }
         public void DeletePermission(ApplicationPermission  permission)
         {
             _dbContext.ApplicationPermissions.Remove(permission);
         }
-        public async Task<Project.Common.Models.PagedResult<ApplicationPermission>> GetApplicationPermissionsAsync(ApplicationPermissionQuery queryModel, CancellationToken cancellationToken = default)
+        public async Task<Project.Common.Models.PagedCustomResult<ApplicationPermission>> GetApplicationPermissionsAsync(ApplicationPermissionQuery queryModel, CancellationToken cancellationToken = default)
         {
 
             var iQuery = _dbContext.ApplicationPermissions.AsQueryable();
@@ -68,7 +70,7 @@ namespace Ecommerce.Infrastructure.Servcies
             var TotalItem = await iQuery.CountAsync(cancellationToken);
             var list = await EntityServices.PageEntityAsync(iQuery, queryModel.PageSize, queryModel.PageIndex, cancellationToken);
 
-            return new Project.Common.Models.PagedResult<ApplicationPermission>
+            return new Project.Common.Models.PagedCustomResult<ApplicationPermission>
             {
                 Items = list,
                 PageIndex = queryModel.PageIndex,

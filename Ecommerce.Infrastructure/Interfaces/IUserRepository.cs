@@ -16,6 +16,7 @@ namespace Ecommerce.Infrastructure.Interfaces
         Task<List<string>> GetClaimUsersAsync(int UserId, CancellationToken cancellationToken = default);
         void UpdateUser(User user);
         void DeleteUser(User user);
+        Task<bool> IsSecurityStampValidAsync(string userId, string currentStamp);
 
     }
 }

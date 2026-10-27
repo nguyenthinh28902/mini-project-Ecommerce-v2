@@ -1,0 +1,305 @@
+﻿/* ==========================================================================
+
+Tom Select Custom Styles (Giữ nguyên cấu hình ban đầu)
+========================================================================== */
+
+/* Khung select */
+.ts-wrapper .ts-control {
+    min-height: 40px;
+    padding: 9px 13px;
+    border: 1px solid #d0d5dd;
+    border-radius: 9px;
+    background: #fff;
+    box-shadow: none;
+    color: #344054;
+    font-size: 13px;
+}
+
+/* Trạng thái focus */
+.ts-wrapper.focus .ts-control {
+    border-color: #8098f9;
+    box-shadow: 0 0 0 3px rgba(68, 97, 242, .12);
+}
+
+/* Khung danh sách xổ xuống */
+.ts-dropdown {
+    margin-top: 5px;
+    padding: 5px;
+    border: 1px solid #eaecf0;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(16, 24, 40, .12);
+    overflow: hidden;
+    font-size: 13px;
+}
+
+    /* Từng lựa chọn */
+    .ts-dropdown .option {
+        padding: 10px 12px;
+        border-radius: 6px;
+        color: #344054;
+        cursor: pointer;
+        transition: background-color .15s ease;
+    }
+
+        /* Hover */
+        .ts-dropdown .option:hover,
+        .ts-dropdown .active {
+            background: #f2f4f7;
+            color: #101828;
+        }
+
+    /* Lựa chọn đang được chọn */
+    .ts-dropdown .selected {
+        background: #edf3ff;
+        color: #2458c6;
+        font-weight: 500;
+    }
+
+/* ==========================================================================
+2. Filter Panel & Form Elements
+========================================================================== */
+
+.filter-panel {
+    background-color: #ffffff;
+    border: 1px solid #eaecf0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.05);
+}
+
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+/* Base Field */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+    .field label {
+        font-size: 13px;
+        font-weight: 500;
+        color: #344054;
+    }
+
+/* Form Controls (Inputs, Selects) */
+.ctrl {
+    height: 40px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #101828;
+    background-color: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 9px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+    .ctrl:focus {
+        border-color: #8098f9;
+        box-shadow: 0 0 0 3px rgba(68, 97, 242, 0.12);
+    }
+
+    .ctrl::placeholder {
+        color: #98a2b3;
+    }
+
+/* Width Layout Modifiers */
+.w-search {
+    flex: 1 1 260px;
+    min-width: 200px;
+}
+
+.w-status,
+.w-type {
+    flex: 0 0 200px;
+}
+
+/* Filter Action Buttons Area */
+.filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+/* ==========================================================================
+3. Buttons
+========================================================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 9px;
+    border: 1px solid #d0d5dd;
+    background-color: #ffffff;
+    color: #344054;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+}
+
+    .btn:hover {
+        background-color: #f9fafb;
+        border-color: #d0d5dd;
+        color: #101828;
+    }
+
+    .btn.primary {
+        background-color: #2458c6;
+        border-color: #2458c6;
+        color: #ffffff;
+    }
+
+        .btn.primary:hover {
+            background-color: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+/* ==========================================================================
+4. Table Panel & Toolbar
+========================================================================== */
+
+.table-panel {
+    background-color: #ffffff;
+    border: 1px solid #eaecf0;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.05);
+    overflow: hidden;
+}
+
+.table-toolbar {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eaecf0;
+    gap: 12px;
+}
+
+.table-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #101828;
+}
+
+.count {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #344054;
+    background-color: #f2f4f7;
+    border-radius: 12px;
+}
+
+.toolbar-spacer {
+    flex-grow: 1;
+}
+
+.tool-link {
+    background: none;
+    border: none;
+    color: #475467;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+    .tool-link:hover {
+        background-color: #f2f4f7;
+        color: #101828;
+    }
+
+/* Wrap container chứa Partial View Table */
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    min-height: 200px;
+}
+
+/* ==========================================================================
+5. Table Footer & Pagination
+========================================================================== */
+
+.table-footer {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    border-top: 1px solid #eaecf0;
+    font-size: 13px;
+    color: #475467;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.page-size {
+    height: 32px;
+    padding: 0 8px;
+    border: 1px solid #d0d5dd;
+    border-radius: 6px;
+    background-color: #ffffff;
+    font-size: 13px;
+    color: #344054;
+    outline: none;
+    cursor: pointer;
+}
+
+    .page-size:focus {
+        border-color: #8098f9;
+    }
+
+.pages {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+}
+
+    /* Styling phụ trợ cho các button trang sinh ra từ JS */
+    .pages button,
+    .pages .page-node {
+        height: 32px;
+        min-width: 32px;
+        padding: 0 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #d0d5dd;
+        border-radius: 6px;
+        background-color: #ffffff;
+        color: #344054;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+        .pages button:hover,
+        .pages .page-node:hover {
+            background-color: #f9fafb;
+            border-color: #d0d5dd;
+        }
+
+        .pages button.active,
+        .pages .page-node.active {
+            background-color: #edf3ff;
+            border-color: #8098f9;
+            color: #2458c6;
+            font-weight: 600;
+        }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Project.Common.Models
 {
-    public class PagedResult<T>
+    public class PagedCustomResult<T>
     {
         public List<T> Items { get; set; } = new();
         public int TotalItems { get; set; }

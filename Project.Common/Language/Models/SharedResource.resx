@@ -219,11 +219,35 @@
   <data name="Msg_Notification" xml:space="preserve">
     <value>Thông báo hệ thống</value>
   </data>
+  <data name="Msg_Permission_Key_Already_Exists" xml:space="preserve">
+    <value>Mã key quyền này đã tồn tại trong hệ thống.</value>
+  </data>
+  <data name="Msg_Permission_NotFound" xml:space="preserve">
+    <value>Không tìm thấy quyền.</value>
+  </data>
   <data name="Msg_Permission_Save_Error" xml:space="preserve">
     <value>Cập nhật key quyền thất bại, vui lòng liên hệ IT.</value>
   </data>
   <data name="Msg_Permission_Save_Success" xml:space="preserve">
     <value>Cập nhật key quyền thành công.</value>
+  </data>
+  <data name="Msg_RoleCreateManagement_BadRequest" xml:space="preserve">
+    <value>Xin vui lòng nhập thông tin vai trò.</value>
+  </data>
+  <data name="Msg_RoleCreateManagement_Conflict" xml:space="preserve">
+    <value>Tên vai trò bị trùng lặp hoặc đã tồn tại.</value>
+  </data>
+  <data name="Msg_RoleCreateManagement_Forbidden" xml:space="preserve">
+    <value>Không có quyền thêm mới vai trò hệ thống.</value>
+  </data>
+  <data name="Msg_RoleManagement_Forbidden" xml:space="preserve">
+    <value>Bạn không có quyền quản lý vai trò.</value>
+  </data>
+  <data name="Msg_RoleNotFound" xml:space="preserve">
+    <value>Không tìm thấy vai trò yêu cầu.</value>
+  </data>
+  <data name="Msg_success" xml:space="preserve">
+    <value>Thao tác thành công.</value>
   </data>
   <data name="Page_AccessDenied_Description" xml:space="preserve">
     <value>Rất tiếc, tài khoản của bạn không có quyền để truy cập vào màn hình hoặc chức năng này. Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là sự nhầm lẫn.</value>
@@ -297,8 +321,11 @@
   <data name="Placeholder_Search_Permission" xml:space="preserve">
     <value>Nhập tên quyền hoặc mã key...</value>
   </data>
+  <data name="Sort_Ascending" xml:space="preserve">
+    <value>Tăng dần</value>
+  </data>
   <data name="Sort_Descending" xml:space="preserve">
-    <value>Giảm dần (DESC)</value>
+    <value>Giảm dần</value>
   </data>
   <data name="Table_Count_Records" xml:space="preserve">
     <value>bản ghi</value>

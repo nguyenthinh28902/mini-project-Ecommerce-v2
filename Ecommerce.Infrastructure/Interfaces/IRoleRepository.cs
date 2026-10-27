@@ -1,4 +1,6 @@
 ﻿using Ecommerce.Infrastructure.Entities;
+using Project.Common.Models;
+using Project.Common.Models.Dtos.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,8 @@ namespace Ecommerce.Infrastructure.Interfaces
         Task<Role?> GetRoleByNameAsync(string name, CancellationToken cancellationToken = default);
         Task<IEnumerable<Role>> GetAllRolesAsync(CancellationToken cancellationToken = default);
         Task<IEnumerable<Role>> GetRoleByUserAsync(int UserId, CancellationToken cancellationToken = default);
+        Task<PagedCustomResult<Role>> GetRolesAsync(RoleQuery queryModel, CancellationToken cancellationToken = default);
+        void UpdateRoleAsync(Role role);
 
     }
 }

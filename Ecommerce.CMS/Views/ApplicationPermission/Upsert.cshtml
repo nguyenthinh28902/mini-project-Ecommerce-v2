@@ -28,7 +28,7 @@
 
             <div class="alert @alertClass mb-3" style="padding: 12px 16px; border-radius: 6px; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; background-color: @(isSuccess ? "#f0fdf4" : "#fef2f2"); color: @(isSuccess ? "#166534" : "#991b1b"); border: 1px solid @(isSuccess ? "#bbf7d0" : "#fecaca");">
                 <span style="font-size: 16px; font-weight: bold;">@alertIcon</span>
-                <div style="flex: 1;">@Model.Message</div>
+                <div style="flex: 1;">@Localizer[Model.Message]</div>
             </div>
 
             <!-- Nếu thực hiện thành công: Tải lại trang cha & tự động đóng Popup -->

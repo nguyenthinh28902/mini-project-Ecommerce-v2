@@ -7,7 +7,7 @@ using System.Globalization;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddAuthenticationExtensions(builder.Configuration);
+
 builder.Services.AddLocalization(options =>
 {
     options.ResourcesPath = "Language";
@@ -22,6 +22,7 @@ builder.Services.AddControllersWithViews()
             factory.Create(typeof(Project.Common.Models.SharedResource));
     });
 builder.Services.AddServiceCollectionExtensions(builder.Configuration);
+builder.Services.AddAuthenticationExtensions(builder.Configuration);
 var app = builder.Build();
 var supportedCultures = new[]
 {

@@ -20,12 +20,14 @@ namespace Ecommerce.CMS.Controllers
         {
             return View();
         }
-       
+        
         public IActionResult Privacy()
         {
             return View();
         }
-        
+
+        [AllowAnonymous]
+        [HttpGet("tu-choi-truy-cap")]
         public IActionResult AccessDenied()
         {
             return View();

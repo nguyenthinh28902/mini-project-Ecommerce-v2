@@ -33,6 +33,7 @@ namespace Project.Common.Servcies
 
         // JWT: email
         public string? Email => User?.FindFirst(ClaimTypes.Email)?.Value;
+        public string? SecurityStamp => User?.FindFirst("SecurityStamp")?.Value;
 
         // JWT: ClaimTypes.Role
         public IEnumerable<string> Roles =>

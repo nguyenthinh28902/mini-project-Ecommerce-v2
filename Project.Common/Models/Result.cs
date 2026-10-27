@@ -11,8 +11,8 @@ namespace Project.Common.Models
         public bool IsSuccess { get; set; }
         public string Message { get; set; } = string.Empty;
         public T? Data { get; set; }
-
+        public int StatusCode { get; set; } = 200;
         public static Result<T> Success(T data, string message = "Success") => new() { IsSuccess = true, Data = data, Message = message };
-        public static Result<T> Failure(string message) => new() { IsSuccess = false, Message = message };
+        public static Result<T> Failure(string message, int statusCode = 400) => new() { IsSuccess = false, Message = message, StatusCode = statusCode };
     }
 }

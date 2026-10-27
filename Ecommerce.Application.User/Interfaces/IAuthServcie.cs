@@ -1,4 +1,5 @@
-﻿using Project.Common.Models;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Project.Common.Models;
 using Project.Common.Models.Dtos.Auth;
 using Project.Common.Models.Dtos.User;
 using System;
@@ -14,5 +15,6 @@ namespace Ecommerce.Application.User.Interfaces
         Task<Result<UserClaimDto>> ProcessSignInAsync(SignInDto signInDto);
         Task<Result<UserClaimDto>> Validation(SignInDto signInDto);
         Task EstablishUserSessionAsync(UserClaimDto userDto);
+        Task ValidateSecurityStampAsync(CookieValidatePrincipalContext context);
     }
 }

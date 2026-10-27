@@ -12,6 +12,7 @@ namespace Project.Common.Servcies
         string? UserId { get; }
         string? Username { get; }
         string? Email { get; }
+        string? SecurityStamp { get; }
         IEnumerable<string> Roles { get; }
         IEnumerable<string> Permissions { get; }
         bool HasPermission(string permission);

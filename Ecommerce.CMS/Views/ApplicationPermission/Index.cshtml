@@ -1,7 +1,6 @@
 ﻿@using Project.Common.Models.ViewModels.ApplicationPermission
 @using Project.Common.Models
-@using Project.Common.Enum.Entities 
-@using Microsoft.AspNetCore.Localization
+
 @using Microsoft.Extensions.Localization
 @using System.ComponentModel.DataAnnotations
 @using System.Reflection
@@ -30,11 +29,11 @@
                 @foreach (var field in Enum.GetValues(typeof(ApplicationPermissionSortField)))
                 {
                     var fieldName = field.ToString();
-                    
+
                     var displayAttribute = typeof(ApplicationPermissionSortField)
-                        .GetMember(fieldName)[0]
-                        .GetCustomAttribute<DisplayAttribute>();
-                        
+                                            .GetMember(fieldName)[0]
+                                            .GetCustomAttribute<DisplayAttribute>();
+
                     var localizedName = displayAttribute?.Name != null ? Localizer[displayAttribute.Name].Value : fieldName;
 
                     <option value="@fieldName" selected="@(Model?.SortBy == fieldName)">@localizedName</option>
@@ -46,12 +45,12 @@
         <div class="field w-type">
             @Html.LabelFor(m => m.IsDescending)
             @Html.DropDownListFor(
-                m => m.IsDescending, 
+                m => m.IsDescending,
                 new List<SelectListItem>
                 {
                     new SelectListItem { Text = Localizer["Sort_Descending"].Value, Value = "true" },
                     new SelectListItem { Text = Localizer["Sort_Ascending"].Value, Value = "false" }
-                }, 
+                },
                 new { @class = "ctrl" }
             )
         </div>
@@ -62,7 +61,7 @@
 
         <!-- Nút hành động tìm kiếm -->
         <div class="filter-actions" style="align-self: flex-end;">
-            <button type="submit" class="btn primary" id="searchBtn">⌕ @Localizer["Btn_Search"]</button>
+            <button type="submit" class="btn primary btn-dotnet" id="searchBtn">⌕ @Localizer["Btn_Search"]</button>
             <button type="button" class="btn" id="resetBtn">@Localizer["Btn_Reset"]</button>
             <button type="button" class="btn primary" id="openCreateModalBtn">＋ @Localizer["Btn_Add_Permission"]</button>
         </div>
@@ -85,18 +84,22 @@
 
     <!-- Chân trang phân trang -->
     <div class="table-footer">
-        <span id="showingText">@Localizer["Table_Showing"] 0 @Localizer["Table_Count_Records"]</span>
-        <span>@Localizer["Table_Showing"]</span>
-        <select class="page-size" id="pageSizeSelector">
-            <option value="10" selected="@(pageSize == 10)">10</option>
-            <option value="20" selected="@(pageSize == 20)">20</option>
-            <option value="50" selected="@(pageSize == 50)">50</option>
-            <option value="100" selected="@(pageSize == 100)">100</option>
-        </select>
-        <span>@Localizer["Table_Rows_PerPage"]</span>
-        <div class="pages" id="paginationContainer">
-            <!-- Render nút phân trang động bằng JS/Ajax -->
+        <!-- Nhóm bên trái: Số lượng bản ghi & selector dòng/trang -->
+        <div class="footer-left">
+            <span id="showingText" class="showing-info">Hiển thị 1 / 1 bản ghi</span>
+            <span class="divider">|</span>
+            <div class="page-size-wrap">
+                <span>Hiển thị</span>
+                <select class="page-size" id="pageSizeSelector">
+                    <option value="10" selected="@(pageSize == 10)">10</option>
+                    <option value="20" selected="@(pageSize == 20)">20</option>
+                    <option value="50" selected="@(pageSize == 50)">50</option>
+                    <option value="100" selected="@(pageSize == 100)">100</option>
+                </select>
+                <span>dòng/trang</span>
+            </div>
         </div>
+
     </div>
 </section>
 
@@ -106,6 +109,8 @@
             // Đồng bộ giá trị mặc định từ dropdown phân trang vào hidden input ngay khi load trang
             var initialPageSize = $("#pageSizeSelector").val();
             $("#pageSizeInput").val(initialPageSize);
+
+
 
             function openPopup(url, title, width = 650, height = 550) {
                 var dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screen.left;
@@ -118,7 +123,7 @@
                 var top = ((h / 2) - (height / 2)) + dualScreenTop;
 
                 var options = `scrollbars=yes,resizable=yes,width=${width},height=${height},top=${top},left=${left}`;
-            
+
                 var popupWindow = window.open(url, title, options);
                 if (window.focus && popupWindow) {
                     popupWindow.focus();
@@ -130,30 +135,54 @@
                 var updateUrl = '@Url.Action("Upsert", "ApplicationPermission")?id=' + id;
                 openPopup(updateUrl, "CapNhatQuyen", 650, 550);
             };
+                    function updateTablePaginationInfo() {
+            var infoNode = document.getElementById("paginationInfo");
+            if (!infoNode) return;
 
+            var totalItems = infoNode.getAttribute("data-total") || "0";
+            var currentCount = infoNode.getAttribute("data-current") || "0";
+            var unitText = infoNode.getAttribute("data-unit") || "bản ghi";
+            var prefixText = infoNode.getAttribute("data-prefix") || "Hiển thị";
+
+            var countElem = document.getElementById("countText");
+            var showingElem = document.getElementById("showingText");
+
+            // Cập nhật text an toàn bằng textContent (giữ nguyên vẹn tiếng Việt có dấu)
+            if (countElem) {
+                countElem.textContent = totalItems + " " + unitText;
+            }
+
+            if (showingElem) {
+                showingElem.textContent = prefixText + " " + currentCount + " / " + totalItems + " " + unitText;
+            }
+        }
             // Hàm gọi Ajax load bảng dữ liệu
             function loadTableData() {
-                var formData = $("#searchForm").serialize(); 
+                var formData = $("#searchForm").serialize();
 
                 $("#tableContainer").html('<div class="p-4 text-center text-muted">@Localizer["Msg_Loading_Ajax"]</div>');
 
                 $.ajax({
                     url: '@Url.Action("GetTableData", "ApplicationPermission")',
                     type: 'GET',
-                    data: formData, 
+                    data: formData,
                     success: function (resultHtml) {
                         $("#tableContainer").html(resultHtml);
+                        updateTablePaginationInfo();
+                        initTableResizer("ApplicationPermissionTable");
                     },
                     error: function () {
                         $("#tableContainer").html('<div class="p-4 text-center text-danger">@Localizer["Msg_Load_Error"]</div>');
                     }
                 });
+               
             }
+
 
             // 1. Khi bấm Submit form tìm kiếm
             $("#searchForm").on("submit", function (e) {
                 e.preventDefault();
-                $("#pageIndexInput").val(1); 
+                $("#pageIndexInput").val(1);
                 loadTableData();
             });
 
@@ -161,7 +190,7 @@
             $("#resetBtn").on("click", function () {
                 $("#searchForm")[0].reset();
                 $("#pageIndexInput").val(1);
-                $("#pageSizeInput").val($("#pageSizeSelector").val()); 
+                $("#pageSizeInput").val($("#pageSizeSelector").val());
                 loadTableData();
             });
 
@@ -177,8 +206,19 @@
                 openPopup(createUrl, "ThemMoiQuyen", 650, 550);
             });
 
-            // Tự động load dữ liệu bảng lần đầu khi mở trang
-            loadTableData();
+         const configBtn = document.getElementById("columnConfigBtn");
+
+            if (configBtn) {
+                configBtn.addEventListener("click", function (e) {
+                    e.preventDefault();
+            
+                    // TODO: Viết logic mở Menu cấu hình cột ở đây
+                    console.log("Đã click nút Cấu hình cột");
+            
+                    // Ví dụ: Nếu bạn muốn bấm vào là reset luôn kích thước cột về mặc định
+                    resetTableResizer("ApplicationPermissionTable"); 
+                });
+            }
         });
     </script>
 }

@@ -14,6 +14,6 @@ namespace Ecommerce.Infrastructure.Interfaces
         Task<IEnumerable<ApplicationPermission>> GetAllPermissionsAsync(CancellationToken cancellationToken = default);
         void UpdatePermission(ApplicationPermission permission);
         void DeletePermission(ApplicationPermission permission);
-        Task<PagedResult<ApplicationPermission>> GetApplicationPermissionsAsync(ApplicationPermissionQuery queryModel, CancellationToken cancellationToken = default);
+        Task<PagedCustomResult<ApplicationPermission>> GetApplicationPermissionsAsync(ApplicationPermissionQuery queryModel, CancellationToken cancellationToken = default);
     }
 }

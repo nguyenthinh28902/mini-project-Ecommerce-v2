@@ -13,6 +13,7 @@ namespace Project.Common.Models.Dtos.User
         public string DisplayName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
+        public string SecurityStamp { get; set; } = string.Empty;
 
         // Danh sách các vai trò của user (có thể tạo một RoleDto nhỏ gọn riêng nếu cần)
         public List<string> Roles { get; set; } = new();

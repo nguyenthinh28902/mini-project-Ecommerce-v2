@@ -3,6 +3,7 @@ using Ecommerce.Application.User.Interfaces;
 using Ecommerce.CMS.Common.Extensions;
 using Ecommerce.Infrastructure.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Project.Common.Enum.Entities;
 using Project.Common.Models;
@@ -16,8 +17,8 @@ namespace Ecommerce.CMS.Controllers
     {
         private readonly ILogger<ApplicationPermissionController> _logger;
         private readonly IMapper _mapper;
-        private readonly IRolePermissionService _permissionService;
-        public ApplicationPermissionController(ILogger<ApplicationPermissionController> logger, IRolePermissionService permissionService,
+        private readonly IPermissionService _permissionService;
+        public ApplicationPermissionController(ILogger<ApplicationPermissionController> logger, IPermissionService permissionService,
             IMapper mapper)
         {
             _logger = logger;
@@ -40,7 +41,7 @@ namespace Ecommerce.CMS.Controllers
             var query = _mapper.Map<ApplicationPermissionQuery>(permissionSearchViewModel);
             var result = await _permissionService.GetApplicationPermissionAsync(query, cancellationToken);
             var viewModels = _mapper.Map<List<ApplicationPermissionViewModel>>(result.Items);
-            var pageResult = new PagedResult<ApplicationPermissionViewModel>()
+            var pageResult = new PagedCustomResult<ApplicationPermissionViewModel>()
             {
                 Items = viewModels,
                 PageIndex = result.PageIndex,
@@ -62,12 +63,18 @@ namespace Ecommerce.CMS.Controllers
                 {
                     vm = _mapper.Map<ApplicationPermissionUpsertViewModel>(permissionResult.Data);
                 }
+                else
+                {
+                    vm.Message = permissionResult.Message;
+                    vm.IsAction = true;
+                    vm.IsSuccess = permissionResult.IsSuccess;
+                }
             }
             return View(vm);
         }
 
-        [HttpGet("them-moi-key-quyen")]
-        public async Task<IActionResult> CreateOrUpdate([FromQuery] ApplicationPermissionUpsertViewModel viewModel, CancellationToken cancellationToken){
+        [HttpPost("quan-ly-key-quen")]
+        public async Task<IActionResult> CreateOrUpdate([FromForm] ApplicationPermissionUpsertViewModel viewModel, CancellationToken cancellationToken){
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
@@ -82,7 +89,8 @@ namespace Ecommerce.CMS.Controllers
             }
             viewModel.Message = result.Message;
             viewModel.IsAction = true;
-            return View(viewModel);
+            viewModel.IsSuccess = result.IsSuccess;
+            return View("Upsert", viewModel);
         }
 
     }

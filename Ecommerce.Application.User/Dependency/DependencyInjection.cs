@@ -13,7 +13,8 @@ namespace Ecommerce.Application.User.Dependency
             services.AddInfrastructureServices(configuration);
             services.AddMappingService();
             services.AddScoped<IAuthServcie, AuthServcie>();
-            services.AddScoped<IRolePermissionService, RolePermissionService>();
+            services.AddScoped<IPermissionService, PermissionService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             return services;
         }

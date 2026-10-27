@@ -49,5 +49,15 @@ namespace Ecommerce.Infrastructure.Servcies
         {
             _dbContext.Users.Remove(user);
         }
+        public async Task<bool> IsSecurityStampValidAsync(string userId, string currentStamp)
+        {
+            var dbStamp = await _dbContext.Users
+                .Where(u => u.Id.ToString() == userId)
+                .Select(u => u.SecurityStamp)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+            return dbStamp == currentStamp;
+        }
     }
 }

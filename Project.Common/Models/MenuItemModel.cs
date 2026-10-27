@@ -23,6 +23,8 @@ namespace Project.Common.Models
 
         [JsonPropertyName("type")]
         public string Type { get; set; }
+        [JsonPropertyName("permissionKey")]
+        public string PermissionKey { get; set; }
 
         [JsonPropertyName("controller")]
         public string Controller { get; set; } = string.Empty;

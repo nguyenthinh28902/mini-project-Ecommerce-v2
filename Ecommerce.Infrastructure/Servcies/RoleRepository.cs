@@ -2,6 +2,8 @@
 using Ecommerce.Infrastructure.Entities;
 using Ecommerce.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Project.Common.Models;
+using Project.Common.Models.Dtos.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +32,7 @@ namespace Ecommerce.Infrastructure.Servcies
         }
         public async Task<Role?> GetRoleByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Roles.FindAsync(new object[] { id }, cancellationToken);
+            return await _dbContext.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
         public async Task<Role?> GetRoleByNameAsync(string name, CancellationToken cancellationToken = default)
         {
@@ -53,6 +55,37 @@ namespace Ecommerce.Infrastructure.Servcies
         public void DeleteRoleAsync(Role role)
         {
             _dbContext.Roles.Remove(role);
+        }
+
+        public async Task<PagedCustomResult<Role>> GetRolesAsync(RoleQuery queryModel, CancellationToken cancellationToken = default)
+        {
+            var iQuery = _dbContext.Roles.AsQueryable();
+            if (!string.IsNullOrEmpty(queryModel.Keywork))
+            {
+                iQuery = iQuery.Where(x => x.Name.Contains(queryModel.Keywork) || x.GroupName.Contains(queryModel.Keywork) || (x.Description != null && x.Description.Contains(queryModel.Keywork)));
+            }
+            if (!string.IsNullOrEmpty(queryModel.SortBy))
+            {
+                // Xác định hướng sắp xếp: "GroupName desc" hoặc "CreatedAt asc"
+                string direction = queryModel.IsDescending ? "desc" : "asc";
+                string orderByString = $"{queryModel.SortBy} {direction}";
+
+                // EF Core sẽ tự động hiểu và dịch ra câu lệnh SQL ORDER BY tương ứng
+                iQuery = iQuery.OrderBy(orderByString);
+            }
+            else
+            {
+                iQuery = iQuery.OrderByDescending(x => x.Id); // Sắp xếp mặc định theo Id nếu không có SortBy
+            }
+            var TotalItem = await iQuery.CountAsync(cancellationToken);
+            var list = await EntityServices.PageEntityAsync(iQuery, queryModel.PageSize, queryModel.PageIndex, cancellationToken);
+            return PagedCustomResult<Role>
+            {
+                Items = list,
+                PageIndex = queryModel.PageIndex,
+                PageSize = queryModel.PageSize,
+                TotalItems = TotalItem
+            };
         }
     }
 }

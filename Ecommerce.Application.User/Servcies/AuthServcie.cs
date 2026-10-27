@@ -1,9 +1,11 @@
 ﻿using Ecommerce.Application.User.Interfaces;
+using Ecommerce.Infrastructure.Dbcontext;
 using Ecommerce.Infrastructure.Interfaces;
 using Ecommerce.Infrastructure.Persistence.UnitOfWork;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Project.Common.Enum.Entities;
 using Project.Common.Libraries;
@@ -55,7 +57,7 @@ namespace Ecommerce.Application.User.Servcies
             {
                 return Result<UserClaimDto>.Failure("Message_Validation_Failure_UserId");
             }
-            if (user.LockoutEnabled == false)
+            if (user.LockoutEnabled == false || user.IsDelete == true)
             {
                 _logger.LogWarning("Tài khoản {UserId} đã bị khóa không thể đăng nhập.", signInDto.Id);
                 return Result<UserClaimDto>.Failure("Message_Validation_Failure_AccountLocked");
@@ -87,10 +89,10 @@ namespace Ecommerce.Application.User.Servcies
                 Email = inforSignIn.Email,
                 DisplayName = inforSignIn.DisplayName,
                 PhoneNumber = inforSignIn.PhoneNumber,
+                SecurityStamp = user.SecurityStamp,
                 WorkLocationId = user.WorkLocationId,
                 Roles = roles.Select(x => x.Name).ToList(),
                 PermissionKeys = roles.SelectMany(r => r.RoleClaims.Select(rc => rc.ClaimValue)).Distinct().ToList()
-
             };
 
             var claimUser = await _userRepo.GetClaimUsersAsync(user.Id);
@@ -107,6 +109,7 @@ namespace Ecommerce.Application.User.Servcies
                 new Claim(ClaimTypes.Email, userDto.Email ?? string.Empty),
                 new Claim(ClaimTypes.Name, userDto.DisplayName ?? string.Empty),
                 new Claim(ClaimTypes.MobilePhone, userDto.PhoneNumber ?? string.Empty),
+                new Claim("SecurityStamp", userDto.SecurityStamp ?? string.Empty),
                 new Claim("WorkLocationId", userDto.WorkLocationId.ToString())
             };
 
@@ -134,14 +137,25 @@ namespace Ecommerce.Application.User.Servcies
             var authProperties = new Microsoft.AspNetCore.Authentication.AuthenticationProperties
             {
                 IsPersistent = true
-             
             };
-
             await httpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 claimsPrincipal,
                 authProperties);
+        }
+        public async Task ValidateSecurityStampAsync(CookieValidatePrincipalContext context)
+        {
+            var userId = context.Principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var tokenStamp = context.Principal.FindFirst("SecurityStamp")?.Value;
 
+            var dbContext = context.HttpContext.RequestServices.GetRequiredService<EcommerceDbContext>();
+            var isSurrentStamp = await _userRepo.IsSecurityStampValidAsync(userId, tokenStamp);
+
+            if (!isSurrentStamp)
+            {
+                context.RejectPrincipal();
+                await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            }
         }
     }
 }
